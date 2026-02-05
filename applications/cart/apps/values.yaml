@@ -1,0 +1,46 @@
+replicaCount: 1
+
+image:
+  repositoryUrl: us-central1-docker.pkg.dev/google-samples/microservices-demo/cartservice
+  tag: v0.10.4
+  pullPolicy: IfNotPresent
+  ports:
+    - name: grpc
+      port: 7070
+      targetPort: 7070
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 64Mi
+  limits:
+    cpu: 300m
+    memory: 128Mi
+
+readinessProbe:
+  failureThreshold: 3
+  periodSeconds: 10
+  grpc:
+    port: 7070
+
+livenessProbe:
+  failureThreshold: 3
+  periodSeconds: 10
+  grpc:
+    port: 7070
+
+startupProbe:
+  failureThreshold: 30
+  periodSeconds: 10
+  grpc:
+    port: 7070
+
+pvc:
+  create: false
+configmap:
+  create: false
+secret:
+  create: false
+
+env:
+  REDIS_ADDR: "cart-redis-service:6379"

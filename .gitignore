@@ -1,0 +1,7 @@
+.vscode/
+helm-template*.tgz
+.idea/
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp

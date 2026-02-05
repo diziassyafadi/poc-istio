@@ -1,0 +1,46 @@
+replicaCount: 1
+
+image:
+  repositoryUrl: us-central1-docker.pkg.dev/google-samples/microservices-demo/recommendationservice
+  tag: v0.10.4
+  pullPolicy: IfNotPresent
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: 8080
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 220Mi
+  limits:
+    cpu: 200m
+    memory: 450Mi
+
+readinessProbe:
+  periodSeconds: 5
+  grpc:
+    port: 8080
+
+livenessProbe:
+  periodSeconds: 5
+  grpc:
+    port: 8080
+
+startupProbe:
+  periodSeconds: 5
+  failureThreshold: 30
+  grpc:
+    port: 8080
+
+pvc:
+  create: false
+configmap:
+  create: false
+secret:
+  create: false
+
+env:
+  PORT: "8080"
+  PRODUCT_CATALOG_SERVICE_ADDR: "productcatalog-service.productcatalog:3550"
+  DISABLE_PROFILER: "1"

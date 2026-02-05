@@ -1,0 +1,29 @@
+replicaCount: 1
+
+annotationExtra:
+  sidecar.istio.io/rewriteAppHTTPProbers: "true"
+
+image:
+  repositoryUrl: us-central1-docker.pkg.dev/google-samples/microservices-demo/loadgenerator
+  tag: v0.10.4
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 300m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+pvc:
+  create: false
+configmap:
+  create: false
+secret:
+  create: false
+
+env:
+  FRONTEND_ADDR: "frontend.frontend:80"
+  USERS: "10"
+  RATE: "1"

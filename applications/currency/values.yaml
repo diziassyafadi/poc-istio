@@ -1,0 +1,45 @@
+replicaCount: 1
+
+image:
+  repositoryUrl: us-central1-docker.pkg.dev/google-samples/microservices-demo/currencyservice
+  tag: v0.10.4
+  pullPolicy: IfNotPresent
+  ports:
+    - name: grpc
+      port: 7000
+      targetPort: 7000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+readinessProbe:
+  periodSeconds: 10
+  grpc:
+    port: 7000
+
+livenessProbe:
+  periodSeconds: 10
+  grpc:
+    port: 7000
+
+startupProbe:
+  failureThreshold: 30
+  periodSeconds: 10
+  grpc:
+    port: 7000
+
+pvc:
+  create: false
+configmap:
+  create: false
+secret:
+  create: false
+
+env:
+  PORT: "7000"
+  DISABLE_PROFILER: "1"

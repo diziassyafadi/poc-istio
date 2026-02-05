@@ -1,0 +1,50 @@
+replicaCount: 1
+
+image:
+  repositoryUrl: us-central1-docker.pkg.dev/google-samples/microservices-demo/checkoutservice
+  tag: v0.10.4
+  pullPolicy: IfNotPresent
+  ports:
+    - name: grpc
+      port: 5050
+      targetPort: 5050
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+readinessProbe:
+  periodSeconds: 10
+  grpc:
+    port: 5050
+
+livenessProbe:
+  periodSeconds: 10
+  grpc:
+    port: 5050
+
+startupProbe:
+  failureThreshold: 30
+  periodSeconds: 10
+  grpc:
+    port: 5050
+
+pvc:
+  create: false
+configmap:
+  create: false
+secret:
+  create: false
+
+env:
+  PORT: "5050"
+  PRODUCT_CATALOG_SERVICE_ADDR: "productcatalog-service.productcatalog:3550"
+  SHIPPING_SERVICE_ADDR: "shipping-service.shipping:50051"
+  PAYMENT_SERVICE_ADDR: "payment-service.payment:50051"
+  EMAIL_SERVICE_ADDR: "email-service.email:5000"
+  CURRENCY_SERVICE_ADDR: "currency-service.currency:7000"
+  CART_SERVICE_ADDR: "cart-apps-service.cart:7070"
