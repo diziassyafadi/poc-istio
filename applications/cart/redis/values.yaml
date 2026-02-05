@@ -48,6 +48,11 @@ startupProbe:
   tcpSocket:
     port: 6379
 
+configmap:
+  create: false
+secret:
+  create: false
+
 pvc:
   volumes:
     - name: redis-data
