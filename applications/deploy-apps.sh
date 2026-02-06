@@ -58,6 +58,7 @@ for values_path in "${VALUES_FILES[@]}"; do
   echo "Values: $values_path"
 
   kubectl create namespace "$namespace" --dry-run=client -o yaml | kubectl apply -f -
+  kubectl label namespace "$namespace" istio-injection=enabled
 
   helm upgrade --install "$release" "$CHART_TGZ" \
     --namespace "$namespace" \

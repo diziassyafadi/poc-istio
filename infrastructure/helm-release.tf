@@ -1,10 +1,11 @@
 provider "helm" {
   kubernetes = {
     config_path    = pathexpand("~/.kube/config")
-    config_context = "k3d-k3d-istio-poc"
+    config_context = "k3d-k3s-default"
   }
 }
 
+# Istio
 resource "helm_release" "istio_base" {
   name             = "istio-base"
   repository       = "https://istio-release.storage.googleapis.com/charts"
@@ -66,7 +67,7 @@ resource "helm_release" "istio_igw" {
   namespace        = "istio-system"
   create_namespace = true
   values = [
-    # file("${path.module}/helm-release/istio/ingress-gateway.yaml")
+    file("${path.module}/helm-release/istio/ingress-gateway.yaml")
   ]
 
   lifecycle {

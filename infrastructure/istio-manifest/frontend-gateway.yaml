@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: frontend-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingress-gateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: frontend-gateway-tls
+      hosts:
+        - poc-istio-fe.local
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: frontend
+  namespace: frontend
+spec:
+  hosts:
+    - poc-istio-fe.local
+  gateways:
+    - istio-system/frontend-gateway
+  http:
+    - route:
+        - destination:
+            host: frontend-service.frontend.svc.cluster.local
+            port:
+              number: 80
