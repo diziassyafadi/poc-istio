@@ -7,3 +7,5 @@ Thumbs.db
 *.swp
 *.crt
 .terraform/
+.tfstate
+.tfstate.backup

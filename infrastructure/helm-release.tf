@@ -6,12 +6,13 @@ provider "helm" {
 }
 
 resource "helm_release" "istio_base" {
-  name       = "istio-base"
-  repository = "https://istio-release.storage.googleapis.com/charts"
-  chart      = "base"
-  namespace  = "istio-system"
+  name             = "istio-base"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  chart            = "base"
+  namespace        = "istio-system"
+  create_namespace = true
   values = [
-    file("${path.module}/helm-release/istio/base.yaml")
+    # file("${path.module}/helm-release/istio/base.yaml")
   ]
 
   lifecycle {
@@ -20,10 +21,11 @@ resource "helm_release" "istio_base" {
 }
 
 resource "helm_release" "istio_cni" {
-  name       = "istio-cni"
-  repository = "https://istio-release.storage.googleapis.com/charts"
-  chart      = "cni"
-  namespace  = "istio-system"
+  name             = "istio-cni"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  chart            = "cni"
+  namespace        = "istio-system"
+  create_namespace = true
   values = [
     file("${path.module}/helm-release/istio/cni.yaml")
   ]
@@ -34,10 +36,11 @@ resource "helm_release" "istio_cni" {
 }
 
 resource "helm_release" "istiod" {
-  name       = "istio"
-  repository = "https://istio-release.storage.googleapis.com/charts"
-  chart      = "istiod"
-  namespace  = "istio-system"
+  name             = "istio"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  chart            = "istiod"
+  namespace        = "istio-system"
+  create_namespace = true
   values = [
     file("${path.module}/helm-release/istio/default.yaml")
   ]
