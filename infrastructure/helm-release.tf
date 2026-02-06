@@ -33,6 +33,10 @@ resource "helm_release" "istio_cni" {
   lifecycle {
     ignore_changes = [metadata]
   }
+
+  depends_on = [
+    helm_release.istio_base
+  ]
 }
 
 resource "helm_release" "istiod" {
@@ -50,6 +54,7 @@ resource "helm_release" "istiod" {
   }
 
   depends_on = [
+    helm_release.istio_base,
     helm_release.istio_cni
   ]
 }
