@@ -2,11 +2,17 @@ apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: frontend-gateway
-  namespace: istio-system
+  namespace: frontend
 spec:
   selector:
     istio: ingress-gateway
   servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - poc-istio-fe.local
     - port:
         number: 443
         name: https
@@ -28,6 +34,11 @@ spec:
   gateways:
     - istio-system/frontend-gateway
   http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
     - route:
         - destination:
             host: frontend-service.frontend.svc.cluster.local
