@@ -1,2 +1,6 @@
 global:
   platform: k3d
+cni:
+  enabled: true
+  ambient:
+    enabled: true

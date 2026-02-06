@@ -60,6 +60,24 @@ resource "helm_release" "istiod" {
   ]
 }
 
+resource "helm_release" "istio_ztunnel" {
+  name             = "istio-ztunnel"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  chart            = "ztunnel"
+  namespace        = "istio-system"
+  create_namespace = true
+
+  lifecycle {
+    ignore_changes = [metadata]
+  }
+
+  depends_on = [
+    helm_release.istio_base,
+    helm_release.istio_cni,
+    helm_release.istiod
+  ]
+}
+
 resource "helm_release" "istio_igw" {
   name             = "istio-ingress-gateway"
   repository       = "https://istio-release.storage.googleapis.com/charts"

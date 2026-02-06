@@ -27,6 +27,13 @@ cd applications
 ./deploy-apps.sh
 ```
 
+## Ambient mode labels
+Disable sidecar injection and enable ambient dataplane on namespaces:
+```bash
+kubectl label namespace ads cart checkout currency default email frontend loadgenerator payment productcatalog recommendation shipping istio-injection- --overwrite
+kubectl label namespace ads cart checkout currency default email frontend loadgenerator payment productcatalog recommendation shipping istio.io/dataplane-mode=ambient --overwrite
+```
+
 ## Frontend via Istio gateway
 The frontend is exposed through an Istio Gateway and VirtualService (no Kubernetes Ingress).
 
