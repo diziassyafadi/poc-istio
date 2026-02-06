@@ -1,7 +1,7 @@
 provider "helm" {
   kubernetes = {
     config_path    = pathexpand("~/.kube/config")
-    config_context = "k3d-k3s-default"
+    config_context = "k3d-k3d-istio-poc"
   }
 }
 
@@ -56,5 +56,26 @@ resource "helm_release" "istiod" {
   depends_on = [
     helm_release.istio_base,
     helm_release.istio_cni
+  ]
+}
+
+resource "helm_release" "istio_igw" {
+  name             = "istio-ingress-gateway"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  chart            = "gateway"
+  namespace        = "istio-system"
+  create_namespace = true
+  values = [
+    # file("${path.module}/helm-release/istio/ingress-gateway.yaml")
+  ]
+
+  lifecycle {
+    ignore_changes = [metadata]
+  }
+
+  depends_on = [
+    helm_release.istio_base,
+    helm_release.istio_cni,
+    helm_release.istiod
   ]
 }
