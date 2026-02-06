@@ -63,3 +63,19 @@ env:
   AD_SERVICE_ADDR: "adservice.ads:9555"
   SHOPPING_ASSISTANT_SERVICE_ADDR: "shoppingassistantservice.shoppingassistantservice:80"
   ENABLE_PROFILER: "0"
+
+ingress:
+  name: frontend
+  className: traefik
+  host: poc-istio-fe.local
+  rules:
+    - host: poc-istio-fe.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
