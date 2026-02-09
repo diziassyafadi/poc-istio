@@ -59,3 +59,19 @@ The frontend is exposed through an Istio Gateway and VirtualService (no Kubernet
 ## Notes
 - Application values live under `applications/**/values.yaml`.
 - Infra Helm releases are defined in `infrastructure/helm-release.tf`.
+
+# Recommendation: Ambient (with caveats)
+
+   **Why ambient fits best**
+   - Lower operational overhead (no sidecars to manage/upgrade).
+   - Faster rollout and fewer per-pod resources.
+   - Centralized L4 mTLS and policy via ztunnel.
+
+   **Downsides vs sidecar**
+   - L7 telemetry/routing/HTTP policies are limited or require waypoint proxies.
+   - Maturity and ecosystem support may lag sidecar for some advanced use cases.
+   - Debugging can be less familiar if your teams rely on Envoy sidecar tooling.
+
+   **When to prefer sidecar**
+   - You need full L7 features per workload today (JWT auth, retries, per-route policies).
+   - You depend on existing sidecar-based observability and troubleshooting workflows.
